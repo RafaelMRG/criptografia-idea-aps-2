@@ -5,13 +5,12 @@
 # /testes_extras.py => binascii, os
 
 from bibliotecas.funcoes_db import queryChave
+from bibliotecas.biblio import checkSenha, checkNome, userInput, biblioteca_print as biblioversion
+import bibliotecas.funcoes_db as dbf
+from bibliotecas.IDEA import IDEA
 
 
 def main():
-	# Importei a biblioteca na pasta /bibliotecas/biblio.py nomeando a para lib
-	from bibliotecas.biblio import checkSenha, checkNome, userInput, biblioteca_print as biblioversion
-	import bibliotecas.funcoes_db as dbf
-	from bibliotecas.IDEA import IDEA
 
 
 	# Print da versão da biblioteca e confirmação que a biblioteca foi importada corretamente
@@ -33,13 +32,14 @@ def main():
 		# Laço que so quebra se senha for menor que 8 caracteres
 		while True:
 			senha = userInput(msgInsiraSuaSenha)
-			if (len(senha) > 8):
-				print("\n\nSenha possuí mais que 8 caracteres\n\n")
+			if (len(senha) > 8 or len(senha) < 3):
+				print("\n\nSenha possuí mais que 8 caracteres ou menos que 3 caracteres\n\n")
 			else:
 				break
 
 		# Este laço abaixo encripta a senha caso o usuário exista e executa uma função de checagem contra os dados do DB que retornam false ou true
 		if (len(queryChave(user)) > 0):
+			
 			
 			chave = int(queryChave(user)[0][0])
 			idea = IDEA(chave)
@@ -63,6 +63,7 @@ def main():
 				logado = False
 		else:
 			print("\n\n---\nNome de usuário incorreto\n---\n\n")
+			logado = False
 
 
 
@@ -89,7 +90,6 @@ def main():
 				espaço1 = (25 - int(len(i[0]))) * " "
 				espaço2 = (5 - int(len(i[1]))) * " "
 				print(f"{i[0]}{espaço1}{i[1]}kg{espaço2}{i[2]}")
-			
 		
 		def listar_usuarios():
 			listaUsers = dbf.queryUsers()
