@@ -1,5 +1,5 @@
 def biblioteca_print():
-    return "\n\nBiblioteca versão: 1.1\nRetorno completo\n\n"
+    return "\n\nBiblioteca versão: 1.2\nRetorno completo\n\n"
 # os \n acima serve para pular uma linha no terminal
 
 # Vamos usar a função abaixo para pedir o usuário para inserir sua senha
@@ -19,6 +19,11 @@ def checkNome(nome):
     else:
         return False
 
+def checkChave(chave):
+    if (len(chave) > 0):
+        return True
+    else:
+        return False
 
 
 
@@ -28,3 +33,6 @@ def checkNome(nome):
 
 # Versão 1.1
 # - Adicionado funções de verificação de senha e email
+
+# Versão 1.2
+# - Adicionado funções de verificação de chave de criptografia
