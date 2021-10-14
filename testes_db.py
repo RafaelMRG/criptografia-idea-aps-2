@@ -47,3 +47,12 @@ DBcursor = con.cursor()
 # Finaliza conexão com banco de dados
 con.commit()
 con.close()
+
+# Senhas utilizadas
+# Rafael 123456
+# Vivian 223456
+# Fabio 323456
+# Fernando 423456
+# Vinicius 523456
+# Igor 623456
+# Lucas 723456
