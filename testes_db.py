@@ -1,45 +1,93 @@
+import binascii
+import os
 import sqlite3
+from bibliotecas.IDEA import IDEA
 
 
 con = sqlite3.connect("./bibliotecas/db/banco.db")
-
 DBcursor = con.cursor()
 
 
-# Linha abaixo usada para criar tabela no db de "usuarios" com colunas "nome", "senha" e chave
-# Tabela "lixo"
-# e comando para deletar tabela "usuarios"
-# Após usada uma vez, não será mais usada
+############################################
+######## UTILIZAR ESTE SCRIPT APENAS 1 VEZ ########
+############################################
 
-# DBcursor.execute("DROP TABLE usuarios")
-# DBcursor.execute("CREATE TABLE usuarios (nome, senha, chave)")
-# DBcursor.execute("CREATE TABLE lixo (lixo, peso, risco)")
+# Script para popular banco de dados com nome de usuário, senha e chave de criptografia
 
-
-
-# Linhas abaixo irá criar previamente os usuários e lista de resíduos radioativos, chaves foram criadas a partir do testes_extras.py e senhas geradas a partir do main.py
-# Precisam ser executadas apenas 1 vez
-
-# DBcursor.execute("INSERT INTO usuarios (nome, senha, chave) VALUES ('Rafael', '6316554473449217439', '2860810080134405214')")
-# DBcursor.execute("INSERT INTO usuarios (nome, senha, chave) VALUES ('Vivian', '10259176932281485866', '17085172137098893768')")
-# DBcursor.execute("INSERT INTO usuarios (nome, senha, chave) VALUES ('Fabio', '5762451042398323849', '11358383868298978893')")
-# DBcursor.execute("INSERT INTO usuarios (nome, senha, chave) VALUES ('Fernando', '5217784806661896863', '14713001563363140955')")
-# DBcursor.execute("INSERT INTO usuarios (nome, senha, chave) VALUES ('Vinicius', '17299228804581155343', '7693246748904938083')")
-# DBcursor.execute("INSERT INTO usuarios (nome, senha, chave) VALUES ('Igor', '13974521050565597877', '15338590261167174220')")
-# DBcursor.execute("INSERT INTO usuarios (nome, senha, chave) VALUES ('Lucas', '15187029488001368154', '7622660824036823917')")
-
-# DBcursor.execute("INSERT INTO lixo (lixo, peso, risco) VALUES ('Uranio', '1', '2')")
-# DBcursor.execute("INSERT INTO lixo (lixo, peso, risco) VALUES ('Cesio', '2', '2')")
-# DBcursor.execute("INSERT INTO lixo (lixo, peso, risco) VALUES ('Plutonio', '5', '3')")
-# DBcursor.execute("INSERT INTO lixo (lixo, peso, risco) VALUES ('Yellow Cake', '20', '1')")
+# Comandos abaixo deletam tables se existir e cria tables usuarios e lixo
+DBcursor.execute("DROP TABLE lixo")
+DBcursor.execute("DROP TABLE usuarios")
+con.commit()
+DBcursor.execute("CREATE TABLE usuarios (nome, senha, chave)")
+DBcursor.execute("CREATE TABLE lixo (lixo, peso, risco)")
+con.commit()
 
 
+# Processamento de logins
+def randomNumber():
+    return int(binascii.b2a_hex(os.urandom(8)).decode("utf-8"), 16)
 
-# Teste de busca de senha
-# query = DBcursor.execute("SELECT senha FROM usuarios WHERE senha = '0'").fetchall()
-# print(query)
-# print(len(query))
+def process_input(seq):
+    split = split_characters(seq)
+    for i in range(len(split)):
+        split[i] = to_hex(split[i])
+    return split
 
+def split_characters(seq):
+    i = 0
+    f = 8
+    split_seq = []
+    while i < len(seq):
+        split_seq.append(seq[i:f])
+        i += 8  # Andando de 8 em 8 caracteres
+        f += 8
+    return split_seq
+
+def to_hex(txt):
+    return int(txt.encode("utf-8").hex().upper(), 16)
+
+# Lista de usuário e senha
+lista_usuarios = [
+    ["Rafael", "123456123456"],
+    ["Vivian", "223456"],
+    ["Fabio", "323456"],
+    ["Fernando", "423456"],
+    ["Vinicius", "523456"],
+    ["Igor", "623456"],
+    ["Lucas", "723456"]
+]
+
+# Adicionando as keys na lista
+for i in lista_usuarios:
+	i.append(str(randomNumber()))
+
+# Adicionando senhas processadas na lista
+for i in lista_usuarios:
+	senha = i[1]
+	senha_split = process_input(senha)
+	idea = IDEA(int(i[2]))
+	for x in range(len(senha_split)):
+		senha_split[x] = idea.encrypt(senha_split[x])
+	i[1] = (senha_split)
+
+# Populando tabela de usuários
+for i in lista_usuarios:
+    usuario = i[0]
+    senha = i[1]
+    key = i[2]
+    DBcursor.execute(f"INSERT INTO usuarios (nome, senha, chave) VALUES ('{usuario}', '{senha}', '{key}')")
+
+
+# Populando lista de lixo
+lista_lixo = [
+	['Urânio', '1', '2'],
+	['Cesio', '2', '2'],
+	['Plutonio', '5', '3'],
+	['Yellow Cake', '20', '1']
+]
+
+for lixo in lista_lixo:
+    DBcursor.execute(f"INSERT INTO lixo (lixo, peso, risco) VALUES ('{lixo[0]}', '{lixo[1]}', '{lixo[2]}')")
 
 
 
@@ -47,12 +95,3 @@ DBcursor = con.cursor()
 # Finaliza conexão com banco de dados
 con.commit()
 con.close()
-
-# Senhas utilizadas
-# Rafael 123456
-# Vivian 223456
-# Fabio 323456
-# Fernando 423456
-# Vinicius 523456
-# Igor 623456
-# Lucas 723456
