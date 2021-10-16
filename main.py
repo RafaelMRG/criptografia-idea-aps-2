@@ -113,25 +113,30 @@ def main():
 		
 		# Fim comandos
 		
+		listar_comandos()
 		
 		# Permite o usuário executar comandos sem sair do programa
 		while True:
 			# Imprime a lista de comandos possiveis
-			listar_comandos()
+			print("\nPara listar os comandos novamente, execute o comando 1")
 			
-			comando_do_usuario = int(input("\n\n Insira um dos comandos (numero):"))
-			if comando_do_usuario == 1:
-				listar_comandos()
-			if comando_do_usuario == 2:
-				listar_lixo()
-			if comando_do_usuario == 3:
-				listar_usuarios()
-			if comando_do_usuario == 4:
-				criar_lixo()
-			if comando_do_usuario == 5:
-				remover_lixo()
-			if comando_do_usuario == 9:
-				break
+			try:
+				comando_do_usuario = int(input("\n\n Insira um dos comandos (numero):"))
+			except:
+				print("\nComando errado ou indisponível")
+			else:
+				if comando_do_usuario == 1:
+					listar_comandos()
+				if comando_do_usuario == 2:
+					listar_lixo()
+				if comando_do_usuario == 3:
+					listar_usuarios()
+				if comando_do_usuario == 4:
+					criar_lixo()
+				if comando_do_usuario == 5:
+					remover_lixo()
+				if comando_do_usuario == 9:
+					break
 
 
 	# Fecha conexão com o DB
