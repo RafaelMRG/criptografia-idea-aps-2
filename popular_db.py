@@ -18,8 +18,10 @@ DBcursor = con.cursor()
 # Script para popular banco de dados com nome de usuário, senha e chave de criptografia
 
 # Comandos abaixo deletam tables se existir e cria tables usuarios e lixo
-DBcursor.execute("DROP TABLE lixo")
-DBcursor.execute("DROP TABLE usuarios")
+
+
+DBcursor.execute("DROP TABLE IF EXISTS lixo")
+DBcursor.execute("DROP TABLE IF EXISTS usuarios")
 con.commit()
 DBcursor.execute("CREATE TABLE usuarios (nome, senha, chave)")
 DBcursor.execute("CREATE TABLE lixo (lixo, peso, risco)")
@@ -51,7 +53,7 @@ def to_hex(txt):
 
 # Lista de usuário e senha
 lista_usuarios = [
-    ["Rafael", "123456123456"],
+    ["Rafael", "teste1"],
     ["Vivian", "223456"],
     ["Fabio", "323456"],
     ["Fernando", "423456"],

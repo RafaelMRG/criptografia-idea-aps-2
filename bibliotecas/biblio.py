@@ -53,7 +53,7 @@ def msgSenhaErro():
     print("\n\n-------\nDados de login incorretos, tente novamente\n-------\n\n")
 
 def msgSenhaErro2():
-    print("\n\nSenha possuí mais que 8 caracteres ou menos que 3 caracteres\n\n")
+    print("\n\nSenha possuí menos que 3 caracteres\n\n")
 
 def msgLoginOk(user):
     mensagem = f"\nUsuário {user} logado com sucesso"
