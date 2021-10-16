@@ -7,6 +7,9 @@ from bibliotecas.IDEA import IDEA
 con = sqlite3.connect("./bibliotecas/db/banco.db")
 DBcursor = con.cursor()
 
+# Este script é destinado para popular o banco de dados com usuários e lista de lixo
+# Utilizar este script quando não tiver com um banco de dados completo ou quando quiser
+# resetar os dados criptografados
 
 ############################################
 ######## UTILIZAR ESTE SCRIPT APENAS 1 VEZ ########

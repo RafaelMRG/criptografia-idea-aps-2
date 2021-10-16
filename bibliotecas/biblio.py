@@ -1,5 +1,5 @@
 def biblioteca_print():
-    return "\n\nBiblioteca versão: 1.2\nRetorno completo\n\n"
+    return "\n\nBiblioteca versão: 1.4\nRetorno completo\n\n"
 # os \n acima serve para pular uma linha no terminal
 
 # Vamos usar a função abaixo para pedir o usuário para inserir sua senha
@@ -64,6 +64,30 @@ def msgLoginOk(user):
 def msgSeparador():
     print("\n" + "-" * 40)
 
+
+# Processamento de logins
+def randomNumber():
+    return int(binascii.b2a_hex(os.urandom(8)).decode("utf-8"), 16)
+
+def process_input(seq):
+    split = split_characters(seq)
+    for i in range(len(split)):
+        split[i] = to_hex(split[i])
+    return split
+
+def split_characters(seq):
+    i = 0
+    f = 8
+    split_seq = []
+    while i < len(seq):
+        split_seq.append(seq[i:f])
+        i += 8  # Andando de 8 em 8 caracteres
+        f += 8
+    return split_seq
+
+def to_hex(txt):
+    return int(txt.encode("utf-8").hex().upper(), 16)
+
 # Versão 1.0
 # - Criação inicial da biblioteca
 
@@ -75,3 +99,6 @@ def msgSeparador():
 
 # Versão 1.3
 # - Adicionado funções de mensagens
+
+# Versão 1.4
+# - Adicionado versão nova de criptografia que aceita mais de 8 caracteres

@@ -32,7 +32,7 @@ def main():
 		# Salvando a senha na variável senha com o input do usuário voltando como string (função da biblioteca)
 		# Input da senha
 			senha = userInput(msgInsiraSuaSenha)
-			if (len(senha) > 8 or len(senha) < 3):
+			if (len(senha) < 3):
 				msgSenhaErro2()
 			else:
 				break
@@ -44,11 +44,13 @@ def main():
 			chave = int(queryChave(user)[0][0])
 			idea = IDEA(chave)
 			
-			senhaHex = int(senha.encode("utf-8").hex().upper(), 16)
-			senhaCript = idea.encrypt(senhaHex)
-
+			senha_split = process_input(senha)
+			
+			for i in range(len(senha_split)):
+				senha_split[i] = idea.encrypt(senha_split[i])
+			
 			# As funções abaixo (biblio.py) retorna true se os dados inseridos existem no DB, se não, retornam false
-			dbSenha = checkSenha(dbf.querySenha(senhaCript))
+			dbSenha = checkSenha(dbf.querySenha(senha_split))
 			dbNome = checkNome(dbf.queryUsuario(user))
 			
 			# Caso os dados do DB sejam iguais aos dados inputados pelo usuário iniciaremos uma sessão de usuário, caso estejam incorretos iremos finalizar o programa
