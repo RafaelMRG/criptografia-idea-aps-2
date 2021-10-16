@@ -5,7 +5,7 @@
 # /testes_extras.py => binascii, os
 
 from bibliotecas.funcoes_db import queryChave
-from bibliotecas.biblio import checkSenha, checkNome, userInput, biblioteca_print as biblioversion
+from bibliotecas.biblio import *
 import bibliotecas.funcoes_db as dbf
 from bibliotecas.IDEA import IDEA
 
@@ -14,7 +14,7 @@ def main():
 
 
 	# Print da versão da biblioteca e confirmação que a biblioteca foi importada corretamente
-	print(biblioversion())
+	print(biblioteca_print())
 
 
 	# Salvando a mensagem mostrada para o usuário na hora de pedir os dados de login
@@ -22,18 +22,18 @@ def main():
 	msgInsiraSeuUsuario = "Insira seu nome de usuário abaixo: \n"
 
 	while True:
-		# Salvando a senha na variável senha com o input do usuário voltando como string (função da biblioteca)
 
 		# Input do usuário
 		user = userInput(msgInsiraSeuUsuario)
 		print("") # Print para adicionar linha em branco entre os inputs (design)
 		
-		# Input da senha
 		# Laço que so quebra se senha for menor que 8 caracteres
 		while True:
+		# Salvando a senha na variável senha com o input do usuário voltando como string (função da biblioteca)
+		# Input da senha
 			senha = userInput(msgInsiraSuaSenha)
 			if (len(senha) > 8 or len(senha) < 3):
-				print("\n\nSenha possuí mais que 8 caracteres ou menos que 3 caracteres\n\n")
+				msgSenhaErro2()
 			else:
 				break
 
@@ -54,15 +54,13 @@ def main():
 			# Caso os dados do DB sejam iguais aos dados inputados pelo usuário iniciaremos uma sessão de usuário, caso estejam incorretos iremos finalizar o programa
 			if (dbSenha == True and dbNome == True):
 				logado = True
-				mensagem = f"\nUsuário {user} logado com sucesso"
-				print(mensagem)
-				print(len(mensagem) * "-" + "\n")
+				msgLoginOk(user)
 				break
 			else:
-				print("\n\n---\nDados de usuário incorreto, tente novamente\n---\n\n")
+				msgSenhaErro()
 				logado = False
 		else:
-			print("\n\n---\nNome de usuário incorreto\n---\n\n")
+			msgUserErro()
 			logado = False
 
 
@@ -74,15 +72,10 @@ def main():
 		# Comandos
 
 		def listar_comandos():
-			print(f"\nLista de comandos:\n")
-			print("1 - Listar comandos")
-			print("2 - Listar lixos")
-			print("3 - Listar usuários com acesso")
-			print("4 - Inserir lixo no banco de dados")
-			print("5 - Remover lixo no banco de dados")
-			print("9 - Sair do programa")
+			msgListaCmds()
 		
 		def listar_lixo():
+			msgSeparador()
 			listaLixo = dbf.queryLixo()
 			print(f"\n\nLegenda RISCO: 3 níveis, 3 = mais perigoso, 1 = menos perigoso\n")
 			print(f"Material{' ' * (25 - int(len('Material')))}Peso{' ' * (5 - int(len('Peso')))}Risco\n")
@@ -92,24 +85,27 @@ def main():
 				print(f"{i[0]}{espaço1}{i[1]}kg{espaço2}{i[2]}")
 		
 		def listar_usuarios():
+			msgSeparador()
 			listaUsers = dbf.queryUsers()
 			print("\nUsuários\n")
 			for i in listaUsers:
 				print(i[0])
     
 		def criar_lixo():
+			msgSeparador()
 			lixoNome = str(input("\nInsira o nome do material radioativo: "))
 			lixoPeso = str(input("Insira o peso do material radioativo(número): "))
 			lixoRisco = str(input("Insira o risco do material radioativo(número): "))
 			queryCompleta = dbf.queryInsertLixo(lixoNome, lixoPeso, lixoRisco)
 			if queryCompleta == True:
-				print("\nLixo inserido no banco de dados com sucesso\n")
+				msgLixoInserido()
     
 		def remover_lixo():
+			msgSeparador()
 			lixoNome = str(input("\nInsira o nome do material radioativo que deseja remover: "))
 			queryCompleta = dbf.queryRemoveLixo(lixoNome)
 			if queryCompleta == True:
-				print("\nLixo removido do banco de dados com sucesso\n")
+				msgLixoRemovido()
 		
 		# Fim comandos
 		
@@ -118,12 +114,12 @@ def main():
 		# Permite o usuário executar comandos sem sair do programa
 		while True:
 			# Imprime a lista de comandos possiveis
-			print("\nPara listar os comandos novamente, execute o comando 1")
+			msgListarCmds()
 			
 			try:
 				comando_do_usuario = int(input("\n\n Insira um dos comandos (numero):"))
 			except:
-				print("\nComando errado ou indisponível")
+				msgComandoErro()
 			else:
 				if comando_do_usuario == 1:
 					listar_comandos()
@@ -139,6 +135,7 @@ def main():
 					break
 
 
+	print("\n\nPROGRAMA FECHADO COM SUCESSO\n")
 	# Fecha conexão com o DB
 	dbf.queryClose()
 
