@@ -96,8 +96,23 @@ def main():
 		def criar_lixo():
 			msgSeparador()
 			lixoNome = str(input("\nInsira o nome do material radioativo: "))
-			lixoPeso = str(input("Insira o peso do material radioativo(número): "))
-			lixoRisco = str(input("Insira o risco do material radioativo(número): "))
+			
+			while True:
+				try:
+					lixoPeso = str(int(input("Insira o peso do material radioativo(número): ")))
+				except:
+					print("Entrada incorreta, tente novamente")
+				else:
+					break
+			
+			while True:
+				try:
+					lixoRisco = str(int(input("Insira o risco do material radioativo(número): ")))
+				except:
+					print("Entrada incorreta, tente novamente")
+				else:
+					break
+			
 			queryCompleta = dbf.queryInsertLixo(lixoNome, lixoPeso, lixoRisco)
 			if queryCompleta == True:
 				msgLixoInserido()
