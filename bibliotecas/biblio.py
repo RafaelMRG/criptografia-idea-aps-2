@@ -1,5 +1,6 @@
 def biblioteca_print():
-    return "\n\nBiblioteca versão: 1.4\nRetorno completo\n\n"
+    linhaSeparadora = "*" * 30
+    return f"\n{linhaSeparadora}\nControle de acesso a embarcação\n{linhaSeparadora}\n"
 # os \n acima serve para pular uma linha no terminal
 
 # Vamos usar a função abaixo para pedir o usuário para inserir sua senha
@@ -102,3 +103,6 @@ def to_hex(txt):
 
 # Versão 1.4
 # - Adicionado versão nova de criptografia que aceita mais de 8 caracteres
+
+# Versão 1.5
+# - Modificado o print de retorno para o programa principal, transformando o print em um cabeçalho de programa com título
