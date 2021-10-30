@@ -154,7 +154,6 @@ def main():
 
 	print("\n\nPROGRAMA FECHADO COM SUCESSO\n")
 	# Fecha conexão com o DB
-	dbf.queryClose()
 
 
 # Se o arquivo que está sendo executado for este, ele irá rodar todo código acima, caso seja usado como um import, o código não será executado
